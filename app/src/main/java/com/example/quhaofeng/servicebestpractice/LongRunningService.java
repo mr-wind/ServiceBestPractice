@@ -32,11 +32,12 @@ public class LongRunningService extends Service {
             }
         }).start();
         AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-        int anHour = 30 * 1000;//时间间隔1小时
+        int anHour = 60 * 60 * 1000;//时间间隔1小时
         long triggerAtTime = SystemClock.elapsedRealtime() + anHour;
         Intent i = new Intent(this, AlarmReceiver.class);
         PendingIntent pi = PendingIntent.getBroadcast(this, 0, i, 0);
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtTime, pi);
+        //alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtTime, pi);
+        alarmManager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtTime, pi);//4.4即API19 之后使用setExact()更精确
         return super.onStartCommand(intent, flags, startId);
     }
 }
